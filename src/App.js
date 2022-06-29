@@ -1,20 +1,20 @@
-import { useRef, useState, useEffect } from "react";
-import Form from "./Form";
+import { useRef, useState } from "react";
+import CoordinateForm from "./CoordinateForm";
 import axios from "axios";
-import ParsedForecast from "./ParsedForecast";
+import Forecast from "./Forecast";
+import Container from "react-bootstrap/Container";
+import { Row } from "react-bootstrap";
 
 function App() {
 	const [forecast, setForecast] = useState([]);
 	const latitudeRef = useRef();
 	const longitudeRef = useRef();
 
+	// Makes REST call to get the office and grid points
 	const submitCoordinates = async (event) => {
 		event.preventDefault();
 		const lat = latitudeRef.current.value;
 		const long = longitudeRef.current.value;
-
-		// lat 44.250111
-		// long -73.205772
 
 		const url = `https://api.weather.gov/points/${lat},${long}`;
 		let response = await axios({
@@ -28,6 +28,7 @@ function App() {
 		getForecast(office, gridX, gridY);
 	};
 
+	// Uses the office and grid points to get the forecast
 	const getForecast = async (office, gridX, gridY) => {
 		const url = `https://api.weather.gov/gridpoints/${office}/${gridX},${gridY}/forecast`;
 		let response = await axios({
@@ -38,15 +39,21 @@ function App() {
 	};
 
 	return (
-		<div>
-			<Form
-				onSubmit={submitCoordinates}
-				latitudeRef={latitudeRef}
-				longitudeRef={longitudeRef}
-			/>
+		<Container className="text-center">
+			<Row className="mt-4">
+				{/* Renders the Coordinate input elements */}
+				<CoordinateForm
+					onSubmit={submitCoordinates}
+					latitudeRef={latitudeRef}
+					longitudeRef={longitudeRef}
+				/>
+			</Row>
 
-			<ParsedForecast forecast={forecast} />
-		</div>
+			<Row className="mt-4">
+				{/* Renders the forecast cards */}
+				<Forecast forecast={forecast} />
+			</Row>
+		</Container>
 	);
 }
 
