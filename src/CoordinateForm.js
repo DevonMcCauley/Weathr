@@ -11,21 +11,21 @@ const CoordinateForm = (props) => {
 		<Form onSubmit={props.onSubmit}>
 			<Container>
 				<Row>
-					<Col xs={5}>
+					<Col sm={12} md={6} lg={5}>
 						<Form.Control
 							type="text"
 							placeholder="Enter latitude"
 							ref={props.latitudeRef}
 						/>
 					</Col>
-					<Col xs={5}>
+					<Col sm={12} md={6} lg={5} className="my-2 my-md-0">
 						<Form.Control
 							type="text"
 							placeholder="Enter longitude"
 							ref={props.longitudeRef}
 						/>
 					</Col>
-					<Col>
+					<Col sm={12} lg={2} className="mt-md-2 mt-lg-0">
 						<Button
 							variant="primary"
 							type="submit"
