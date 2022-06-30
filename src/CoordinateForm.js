@@ -8,6 +8,7 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 // Buids the input fields for entering coordinates
 // Returns Refs to the <App /> component to process
 const CoordinateForm = (props) => {
+	
 	// Maintains control of latitude input
 	const handleLatitudeChange = (event) => {
 		props.setLatitude(event.target.value);
