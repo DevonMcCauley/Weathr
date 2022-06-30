@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import CoordinateForm from "./CoordinateForm";
 import axios from "axios";
 import Forecast from "./Forecast";
@@ -9,6 +9,7 @@ function App() {
 	const [forecast, setForecast] = useState([]);
 	const [latitude, setLatitude] = useState("");
 	const [longitude, setLongitude] = useState("");
+	const [city, setCity] = useState("");
 
 	// Makes REST call to get the office and grid points
 	const submitCoordinates = async (event) => {
@@ -34,6 +35,21 @@ function App() {
 			url: url,
 		});
 		setForecast(response.data.properties.periods);
+		getCity();
+	};
+
+	const getCity = async () => {
+		const response = await axios({
+			method: "GET",
+			url: "https://api.bigdatacloud.net/data/reverse-geocode-client",
+			params: {
+				latitude: latitude,
+				longitude: longitude,
+			},
+		});
+		const { data } = response;
+		let city = `${data.locality}, ${data.principalSubdivision}`;
+		setCity(city);
 	};
 
 	// Used to detect the user's location and set the Latitude and Longitude states
@@ -43,6 +59,8 @@ function App() {
 			setLongitude(position.coords.longitude);
 		});
 	};
+
+	const cityDiv = <div className="mt-3 fs-5">{city}</div>;
 
 	return (
 		<Container className="text-center">
@@ -57,8 +75,8 @@ function App() {
 					setLongitude={setLongitude}
 				/>
 			</Row>
-
-			<Row className="mt-4">
+			{city && cityDiv}
+			<Row className="mt-3">
 				{/* Renders the forecast cards */}
 				<Forecast forecast={forecast} />
 			</Row>

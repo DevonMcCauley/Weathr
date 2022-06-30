@@ -5,13 +5,18 @@ import Row from "react-bootstrap/Row";
 const Forecast = (props) => {
 	const { forecast } = props;
 	if (forecast.length < 1) {
-		return <div>Noting yet - try entering some coordinates!</div>;
+		return (
+			<div>
+				Nothing yet <i className="bi bi-tornado"></i> Try entering some
+				coordinates!
+			</div>
+		);
 	}
 	// Iterates through the returned forecast objects to build the display cards
 	const forecastList = forecast.map((forecast) => {
 		return (
 			<Col key={forecast.number}>
-				<Card style={{ height: "250px" }}>
+				<Card style={{ height: "250px" }} border="primary" bg="gray900">
 					<Card.Body>
 						<Card.Title>{forecast.name}</Card.Title>
 						{forecast.temperature}&#176;{forecast.temperatureUnit}
