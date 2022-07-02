@@ -3,6 +3,7 @@ import CoordinateForm from "./CoordinateForm";
 import axios from "axios";
 import Forecast from "./Forecast";
 import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
 import { Row } from "react-bootstrap";
 
 function App() {
@@ -10,6 +11,8 @@ function App() {
 	const [latitude, setLatitude] = useState("");
 	const [longitude, setLongitude] = useState("");
 	const [city, setCity] = useState("");
+	const [daily, setDaily] = useState(false);
+	const [hourlyForecast, setHourlyForecast] = useState([]);
 
 	// Makes REST call to get the office and grid points
 	const submitCoordinates = async (event) => {
@@ -29,13 +32,27 @@ function App() {
 
 	// Uses the office and grid points to get the forecast
 	const getForecast = async (office, gridX, gridY) => {
-		const url = `https://api.weather.gov/gridpoints/${office}/${gridX},${gridY}/forecast`;
+		let url = `https://api.weather.gov/gridpoints/${office}/${gridX},${gridY}/forecast`;
 		let response = await axios({
 			method: "GET",
 			url: url,
 		});
 		setForecast(response.data.properties.periods);
+		getForecastHourly(office, gridX, gridY);
 		getCity();
+	};
+
+	// Uses the office and grid points to get the HOURLY forecast
+	const getForecastHourly = async (office, gridX, gridY) => {
+		const url = `https://api.weather.gov/gridpoints/${office}/${gridX},${gridY}/forecast/hourly`;
+		const response = await axios({
+			method: "GET",
+			url: url,
+		});
+		const returnedHours = response.data.properties.periods;
+		// Ensures that only the next 24 hours are displayed
+		let oneDayForecast = returnedHours.slice(0, 24);
+		setHourlyForecast(oneDayForecast);
 	};
 
 	const getCity = async () => {
@@ -60,6 +77,11 @@ function App() {
 		});
 	};
 
+	const handleSwitchChange = () => {
+		setDaily(!daily);
+	};
+
+	// Outputs the user's current city
 	const cityDiv = <div className="mt-3 fs-5">{city}</div>;
 
 	return (
@@ -75,11 +97,28 @@ function App() {
 					setLongitude={setLongitude}
 				/>
 			</Row>
+			<Form.Switch
+				type="switch"
+				id="daily-switch"
+				label="Daily Forecast"
+				checked={daily}
+				onChange={handleSwitchChange}
+			/>
 			{city && cityDiv}
-			<Row className="mt-3">
-				{/* Renders the forecast cards */}
-				<Forecast forecast={forecast} />
-			</Row>
+
+			{daily && (
+				<Row className="mt-3">
+					{/* Renders the forecast cards */}
+					<Forecast forecast={forecast} />
+				</Row>
+			)}
+			
+			{!daily && (
+				<Row className="mt-3">
+					{/* Renders the forecast cards */}
+					<Forecast forecast={hourlyForecast} />
+				</Row>
+			)}
 		</Container>
 	);
 }
