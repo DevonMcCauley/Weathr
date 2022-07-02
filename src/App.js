@@ -6,6 +6,7 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import { Row } from "react-bootstrap";
 
+// TODO: Likely refactor to use React context
 function App() {
 	const [forecast, setForecast] = useState([]);
 	const [latitude, setLatitude] = useState("");
@@ -97,28 +98,20 @@ function App() {
 					setLongitude={setLongitude}
 				/>
 			</Row>
-			<Form.Switch
-				type="switch"
-				id="daily-switch"
-				label="Daily Forecast"
-				checked={daily}
-				onChange={handleSwitchChange}
-			/>
+			<div className="mt-3">
+				<Form.Switch
+					type="switch"
+					id="daily-switch"
+					checked={daily}
+					onChange={handleSwitchChange}
+				/>
+			</div>
 			{city && cityDiv}
-
-			{daily && (
-				<Row className="mt-3">
-					{/* Renders the forecast cards */}
-					<Forecast forecast={forecast} />
-				</Row>
-			)}
-			
-			{!daily && (
-				<Row className="mt-3">
-					{/* Renders the forecast cards */}
-					<Forecast forecast={hourlyForecast} />
-				</Row>
-			)}
+			<Forecast
+				forecast={forecast}
+				hourlyForecast={hourlyForecast}
+				daily={daily}
+			/>
 		</Container>
 	);
 }
