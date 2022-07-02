@@ -11,15 +11,18 @@ const ForecastList = (props) => {
 				coordinates!
 			</div>
 		);
-   }
-   
+	}
+
 	// Iterates through the returned forecast objects to build the display cards
 	const forecastList = forecast.map((forecast) => {
+		console.log(forecast);
 		return (
 			<Col key={forecast.number}>
 				<Card style={{ height: "250px" }} border="primary" bg="gray900">
 					<Card.Body>
-						<Card.Title>{forecast.name}</Card.Title>
+						<Card.Title>
+							{forecast.name || `Hour ${forecast.number}`}
+						</Card.Title>
 						{forecast.temperature}&#176;{forecast.temperatureUnit}
 						<br />
 						Wind {forecast.windDirection} {forecast.windSpeed}

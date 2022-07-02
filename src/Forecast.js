@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import ForecastList from "./ForecastList";
 import Row from "react-bootstrap/Row";
 
