@@ -2,7 +2,7 @@ import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 
-const Forecast = (props) => {
+const ForecastList = (props) => {
 	const { forecast } = props;
 	if (forecast.length < 1) {
 		return (
@@ -12,13 +12,17 @@ const Forecast = (props) => {
 			</div>
 		);
 	}
+
 	// Iterates through the returned forecast objects to build the display cards
 	const forecastList = forecast.map((forecast) => {
+		console.log(forecast);
 		return (
 			<Col key={forecast.number}>
 				<Card style={{ height: "250px" }} border="primary" bg="gray900">
 					<Card.Body>
-						<Card.Title>{forecast.name}</Card.Title>
+						<Card.Title>
+							{forecast.name || `Hour ${forecast.number}`}
+						</Card.Title>
 						{forecast.temperature}&#176;{forecast.temperatureUnit}
 						<br />
 						Wind {forecast.windDirection} {forecast.windSpeed}
@@ -30,7 +34,6 @@ const Forecast = (props) => {
 			</Col>
 		);
 	});
-
 	return (
 		<Row xs={1} md={2} lg={3} className="g-4 ms-1">
 			{forecastList}
@@ -38,4 +41,4 @@ const Forecast = (props) => {
 	);
 };
 
-export default Forecast;
+export default ForecastList;

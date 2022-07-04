@@ -3,13 +3,17 @@ import CoordinateForm from "./CoordinateForm";
 import axios from "axios";
 import Forecast from "./Forecast";
 import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
 import { Row } from "react-bootstrap";
 
+// TODO: Likely refactor to use React context
 function App() {
 	const [forecast, setForecast] = useState([]);
 	const [latitude, setLatitude] = useState("");
 	const [longitude, setLongitude] = useState("");
 	const [city, setCity] = useState("");
+	const [daily, setDaily] = useState(true);
+	const [hourlyForecast, setHourlyForecast] = useState([]);
 
 	// Makes REST call to get the office and grid points
 	const submitCoordinates = async (event) => {
@@ -29,13 +33,27 @@ function App() {
 
 	// Uses the office and grid points to get the forecast
 	const getForecast = async (office, gridX, gridY) => {
-		const url = `https://api.weather.gov/gridpoints/${office}/${gridX},${gridY}/forecast`;
+		let url = `https://api.weather.gov/gridpoints/${office}/${gridX},${gridY}/forecast`;
 		let response = await axios({
 			method: "GET",
 			url: url,
 		});
 		setForecast(response.data.properties.periods);
+		getForecastHourly(office, gridX, gridY);
 		getCity();
+	};
+
+	// Uses the office and grid points to get the HOURLY forecast
+	const getForecastHourly = async (office, gridX, gridY) => {
+		const url = `https://api.weather.gov/gridpoints/${office}/${gridX},${gridY}/forecast/hourly`;
+		const response = await axios({
+			method: "GET",
+			url: url,
+		});
+		const returnedHours = response.data.properties.periods;
+		// Ensures that only the next 24 hours are displayed
+		let oneDayForecast = returnedHours.slice(0, 24);
+		setHourlyForecast(oneDayForecast);
 	};
 
 	const getCity = async () => {
@@ -60,7 +78,16 @@ function App() {
 		});
 	};
 
+	const handleSwitchChange = () => {
+		setDaily(!daily);
+	};
+
+	// Outputs the user's current city
 	const cityDiv = <div className="mt-3 fs-5">{city}</div>;
+
+	// Toggles a message to the user displaying which type of forecast they are viewing (Daily vs Hourly)
+	const dailyDiv = <div>Daily</div>;
+	const hourlyDiv = <div>Hourly</div>;
 
 	return (
 		<Container className="text-center">
@@ -75,11 +102,22 @@ function App() {
 					setLongitude={setLongitude}
 				/>
 			</Row>
+			<div className="mt-3">
+				<Form.Switch
+					type="switch"
+					id="daily-switch"
+					checked={daily}
+					onChange={handleSwitchChange}
+				/>
+			</div>
 			{city && cityDiv}
-			<Row className="mt-3">
-				{/* Renders the forecast cards */}
-				<Forecast forecast={forecast} />
-			</Row>
+			{daily && dailyDiv}
+			{!daily && hourlyDiv}
+			<Forecast
+				forecast={forecast}
+				hourlyForecast={hourlyForecast}
+				daily={daily}
+			/>
 		</Container>
 	);
 }
