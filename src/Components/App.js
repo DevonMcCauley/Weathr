@@ -12,7 +12,7 @@ function App() {
 	const [latitude, setLatitude] = useState("");
 	const [longitude, setLongitude] = useState("");
 	const [city, setCity] = useState("");
-	const [daily, setDaily] = useState(false);
+	const [daily, setDaily] = useState(true);
 	const [hourlyForecast, setHourlyForecast] = useState([]);
 
 	// Makes REST call to get the office and grid points
@@ -85,6 +85,10 @@ function App() {
 	// Outputs the user's current city
 	const cityDiv = <div className="mt-3 fs-5">{city}</div>;
 
+	// Toggles a message to the user displaying which type of forecast they are viewing (Daily vs Hourly)
+	const dailyDiv = <div>Daily</div>;
+	const hourlyDiv = <div>Hourly</div>;
+
 	return (
 		<Container className="text-center">
 			<Row className="mt-4">
@@ -107,6 +111,8 @@ function App() {
 				/>
 			</div>
 			{city && cityDiv}
+			{daily && dailyDiv}
+			{!daily && hourlyDiv}
 			<Forecast
 				forecast={forecast}
 				hourlyForecast={hourlyForecast}
