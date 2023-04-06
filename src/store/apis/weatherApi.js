@@ -14,7 +14,6 @@ const weatherApi = createApi({
 					_extraOptions,
 					fetchWithBQ
 				) {
-					// get a random user
 					const coordinates = await fetchWithBQ(
 						`points/${latitude},${longitude}`
 					);
