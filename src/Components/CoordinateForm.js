@@ -2,14 +2,18 @@
 
 import { useState } from 'react';
 import { fetchCoordinates } from '../store';
-import { useDispatch } from 'react-redux';
-import { TbCurrentLocation } from 'react-icons/tb';
+import { useThunk } from '../hooks/use-thunk';
+import { toast } from 'react-toastify';
+import { GeoAlt } from 'react-bootstrap-icons';
+
 const CoordinateForm = () => {
-	// const [doFetchUsers, isLoadingUsers, loadingUsersError] =
-	// useThunk(fetchUsers);
-	const dispatch = useDispatch();
 	const [latitude, setLatitude] = useState('');
 	const [longitude, setLongitude] = useState('');
+	const [doFetchCoordinates, isLoading, error] = useThunk(fetchCoordinates);
+
+	if (error) {
+		toast.error(error.message);
+	}
 
 	// Maintains control of latitude input
 	const handleLatitudeChange = (event) => {
@@ -24,7 +28,7 @@ const CoordinateForm = () => {
 	// Submits entered coordinates to the weather API
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		dispatch(fetchCoordinates({ latitude, longitude }));
+		doFetchCoordinates({ latitude, longitude });
 	};
 
 	// Gets the user's location automatically
@@ -33,7 +37,17 @@ const CoordinateForm = () => {
 			setLatitude(position.coords.latitude);
 			setLongitude(position.coords.longitude);
 		});
+
+		// if (latitude === '' || longitude === '') {
+		// 	toast.error('Cannot retrieve location. Location access may be blocked.');
+		// }
 	};
+
+	let message = '';
+
+	if (isLoading) {
+		message = 'Loading...';
+	}
 
 	return (
 		<form onSubmit={handleSubmit} className="container">
@@ -61,16 +75,18 @@ const CoordinateForm = () => {
 				<div className="col-12 col-md btn-group">
 					<button
 						type="button"
-						className="w-25 btn btn-secondary"
+						className="w-25 btn btn-secondary d-flex h-100 align-items-center justify-content-center"
+						title="Get Location"
 						onClick={handleGetLocation}
 					>
-						<TbCurrentLocation />
+						<GeoAlt size={20} />
 					</button>
 					<button type="submit" className="w-100 btn btn-primary">
 						Submit
 					</button>
 				</div>
 			</div>
+			{message}
 		</form>
 	);
 };
