@@ -26,25 +26,34 @@ const CoordinateForm = () => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<input
-				type="number"
-				placeholder="Enter latitude"
-				onChange={handleLatitudeChange}
-				value={latitude}
-				step={0.01}
-			/>
-			<input
-				type="number"
-				placeholder="Enter longitude"
-				onChange={handleLongitudeChange}
-				value={longitude}
-				step={0.01}
-			/>
-
-			<button type="submit" className="w-100">
-				Submit
-			</button>
+		<form onSubmit={handleSubmit} className="container">
+			<div className="row">
+				<div className="col-12 col-md-4">
+					<input
+						className="form-control"
+						type="number"
+						placeholder="Enter latitude"
+						onChange={handleLatitudeChange}
+						value={latitude}
+						step={0.01}
+					/>
+				</div>
+				<div className="col-12 col-md-4 my-2 my-md-0">
+					<input
+						type="number"
+						className="form-control"
+						placeholder="Enter longitude"
+						onChange={handleLongitudeChange}
+						value={longitude}
+						step={0.01}
+					/>
+				</div>
+				<div className="col-12 col-md">
+					<button type="submit" className="w-100 btn btn-primary">
+						Submit
+					</button>
+				</div>
+			</div>
 		</form>
 	);
 };
