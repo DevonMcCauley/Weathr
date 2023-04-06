@@ -1,11 +1,12 @@
 // Buids the input fields for entering coordinates
 
 import { useState } from 'react';
-import { useLazyFetchForecastQuery } from '../store';
-
+import { fetchCoordinates } from '../store';
+import { useDispatch } from 'react-redux';
 const CoordinateForm = () => {
-	const [fetchForecast, { isLoading, isError }] = useLazyFetchForecastQuery();
-
+	// const [doFetchUsers, isLoadingUsers, loadingUsersError] =
+	// useThunk(fetchUsers);
+	const dispatch = useDispatch();
 	const [latitude, setLatitude] = useState('');
 	const [longitude, setLongitude] = useState('');
 
@@ -22,7 +23,7 @@ const CoordinateForm = () => {
 	// Submits entered coordinates to the weather API
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		fetchForecast({ latitude, longitude });
+		dispatch(fetchCoordinates({ latitude, longitude }));
 	};
 
 	return (
