@@ -1,5 +1,4 @@
 const ForecastListItem = ({ forecast }) => {
-	console.log(forecast);
 	return (
 		<div className="col">
 			<div className="card h-100">

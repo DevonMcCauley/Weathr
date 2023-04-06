@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { fetchCoordinates } from '../store';
 import { useDispatch } from 'react-redux';
+import { TbCurrentLocation } from 'react-icons/tb';
 const CoordinateForm = () => {
 	// const [doFetchUsers, isLoadingUsers, loadingUsersError] =
 	// useThunk(fetchUsers);
@@ -24,6 +25,14 @@ const CoordinateForm = () => {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		dispatch(fetchCoordinates({ latitude, longitude }));
+	};
+
+	// Gets the user's location automatically
+	const handleGetLocation = () => {
+		navigator.geolocation.getCurrentPosition((position) => {
+			setLatitude(position.coords.latitude);
+			setLongitude(position.coords.longitude);
+		});
 	};
 
 	return (
@@ -49,7 +58,14 @@ const CoordinateForm = () => {
 						step={0.01}
 					/>
 				</div>
-				<div className="col-12 col-md">
+				<div className="col-12 col-md btn-group">
+					<button
+						type="button"
+						className="w-25 btn btn-secondary"
+						onClick={handleGetLocation}
+					>
+						<TbCurrentLocation />
+					</button>
 					<button type="submit" className="w-100 btn btn-primary">
 						Submit
 					</button>
