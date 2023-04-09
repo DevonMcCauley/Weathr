@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
+// Simplified Thunk calls
 export function useThunk(thunk) {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);

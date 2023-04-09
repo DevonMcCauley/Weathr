@@ -1,3 +1,4 @@
+// An inidividual Forecast Item
 const ForecastListItem = ({ forecast }) => {
 	return (
 		<div className="col">

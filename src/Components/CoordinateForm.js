@@ -1,16 +1,15 @@
-// Buids the input fields for entering coordinates
-
 import { useState } from 'react';
-import { fetchCoordinates } from '../store';
-import { useThunk } from '../hooks/use-thunk';
 import { toast } from 'react-toastify';
 import { GeoAlt } from 'react-bootstrap-icons';
+import { useThunk } from '../hooks/use-thunk';
+import { fetchCoordinates } from '../store';
+import DisplayLoading from './DisplayLoading';
 
+// Buids the input fields for entering coordinates
 const CoordinateForm = () => {
 	const [latitude, setLatitude] = useState('');
 	const [longitude, setLongitude] = useState('');
-	const [doFetchCoordinates, isLoading, error] = useThunk(fetchCoordinates);
-
+	let [doFetchCoordinates, isLoading, error] = useThunk(fetchCoordinates);
 	if (error) {
 		toast.error(error.message);
 	}
@@ -33,21 +32,17 @@ const CoordinateForm = () => {
 
 	// Gets the user's location automatically
 	const handleGetLocation = () => {
+		// TODO: Find way to await this so that error message works
 		navigator.geolocation.getCurrentPosition((position) => {
 			setLatitude(position.coords.latitude);
 			setLongitude(position.coords.longitude);
 		});
 
+		// Alerts user if geolocation is blocked or otherwise unavailable
 		// if (latitude === '' || longitude === '') {
 		// 	toast.error('Cannot retrieve location. Location access may be blocked.');
 		// }
 	};
-
-	let message = '';
-
-	if (isLoading) {
-		message = 'Loading...';
-	}
 
 	return (
 		<form onSubmit={handleSubmit} className="container">
@@ -86,7 +81,7 @@ const CoordinateForm = () => {
 					</button>
 				</div>
 			</div>
-			{message}
+			{isLoading && <DisplayLoading />}
 		</form>
 	);
 };

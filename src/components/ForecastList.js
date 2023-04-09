@@ -1,10 +1,10 @@
-import { Fragment, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { fetchForecast } from '../store';
-import ForecastListItem from './ForecastListItem';
-import { useThunk } from '../hooks/use-thunk';
 import { toast } from 'react-toastify';
 import { GlobeAmericas } from 'react-bootstrap-icons';
+import ForecastListItem from './ForecastListItem';
+import { useThunk } from '../hooks/use-thunk';
+import { fetchForecast } from '../store';
 
 const ForecastList = () => {
 	const [doFetchForecast, isLoading, error] = useThunk(fetchForecast);
