@@ -7,7 +7,12 @@ const Footer = () => {
      text-center small bg-dark text-light w-100"
 		>
 			Weathr - Devon McCauley
-			<a className="link-warning" href="https://www.devondevelops.tech">
+			<a
+				className="link-warning"
+				target="_blank"
+				href="https://www.devondevelops.tech"
+				rel="noreferrer noopener"
+			>
 				<br />
 				Devon Develops
 			</a>
