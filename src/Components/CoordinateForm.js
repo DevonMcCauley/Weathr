@@ -31,18 +31,35 @@ const CoordinateForm = () => {
 	};
 
 	// Gets the user's location automatically
-	const handleGetLocation = () => {
-		// TODO: Find way to await this so that error message works
-		navigator.geolocation.getCurrentPosition((position) => {
-			setLatitude(position.coords.latitude);
-			setLongitude(position.coords.longitude);
-		});
+	const handleGetLocation = async () => {
+		if (navigator.permissions && navigator.permissions.query) {
+			const result = await navigator.permissions.query({ name: 'geolocation' });
 
-		// Alerts user if geolocation is blocked or otherwise unavailable
-		// if (latitude === '' || longitude === '') {
-		// 	toast.error('Cannot retrieve location. Location access may be blocked.');
-		// }
+			// Will return ['granted', 'prompt', 'denied']
+			const permission = result.state;
+			if (permission === 'granted' || permission === 'prompt') {
+				getCurrentLocation();
+			}
+		} else if (navigator.geolocation) {
+			getCurrentLocation();
+		}
 	};
+
+	function getCurrentLocation() {
+		navigator.geolocation.getCurrentPosition(
+			(position) => {
+				// Set latitude and longitude
+				setLatitude(position.coords.latitude);
+				setLongitude(position.coords.longitude);
+			},
+			(err) => toast.error(err.message),
+			{
+				enableHighAccuracy: true,
+				timeout: 5000,
+				maximumAge: 0,
+			}
+		);
+	}
 
 	return (
 		<form onSubmit={handleSubmit} className="container">
