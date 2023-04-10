@@ -9,7 +9,9 @@ import DisplayLoading from './DisplayLoading';
 const CoordinateForm = () => {
 	const [latitude, setLatitude] = useState('');
 	const [longitude, setLongitude] = useState('');
+	const [isLoadingGeolocation, setIsLoadingGeolocation] = useState(false);
 	const [doFetchCoordinates, isLoading, error] = useThunk(fetchCoordinates);
+
 	if (error) {
 		toast.error(error.message);
 	}
@@ -24,39 +26,47 @@ const CoordinateForm = () => {
 		setLongitude(event.target.value);
 	};
 
-	// Submits entered coordinates to the weather API
+	// Submits entered `c`oordinates to the weather API
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		doFetchCoordinates({ latitude, longitude });
 	};
 
-	// Gets the user's location automatically
+	// Gets the user's location automatically use geolocation API
 	const handleGetLocation = async () => {
 		if (navigator.permissions && navigator.permissions.query) {
-			const result = await navigator.permissions.query({ name: 'geolocation' });
+			setIsLoadingGeolocation(true);
+			const { state } = await navigator.permissions.query({
+				name: 'geolocation',
+			});
 
 			// Will return ['granted', 'prompt', 'denied']
-			const permission = result.state;
-			if (permission === 'granted' || permission === 'prompt') {
-				getCurrentLocation();
+			if (state === 'granted' || state === 'prompt') setCurrentLocation();
+
+			if (state === 'denied') {
+				toast.error(
+					'Geolocation permission has been denied. Please ensure that you have location services enabled.'
+				);
+				setIsLoadingGeolocation(false);
 			}
 		} else if (navigator.geolocation) {
-			getCurrentLocation();
+			setCurrentLocation();
+		} else {
+			toast.error('Something went wrong.');
 		}
 	};
 
-	function getCurrentLocation() {
+	function setCurrentLocation() {
 		navigator.geolocation.getCurrentPosition(
 			(position) => {
 				// Set latitude and longitude
 				setLatitude(position.coords.latitude);
 				setLongitude(position.coords.longitude);
+				setIsLoadingGeolocation(false);
 			},
-			(err) => toast.error(err.message),
-			{
-				enableHighAccuracy: true,
-				timeout: 5000,
-				maximumAge: 0,
+			(err) => {
+				toast.error(err.message);
+				setIsLoadingGeolocation(false);
 			}
 		);
 	}
@@ -98,6 +108,10 @@ const CoordinateForm = () => {
 					</button>
 				</div>
 			</div>
+			<p>{isLoadingGeolocation}</p>
+			{isLoadingGeolocation && (
+				<DisplayLoading label={'Gathering location...'} />
+			)}
 			{isLoading && <DisplayLoading label={'Gathering forecast...'} />}
 		</form>
 	);
