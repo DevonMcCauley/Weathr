@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useStorage } from '../../hooks/use-storage';
+import { CloudHail } from 'react-bootstrap-icons';
 
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -29,9 +30,14 @@ const Header = () => {
 	return (
 		<nav className="navbar bg-body-tertiary fixed-top">
 			<div className="container-fluid">
+				<div className="h2 d-flex align-items-center">
+					Weathr
+					<CloudHail className="ms-2 ms-md-3" />
+				</div>
 				<button className="navbar-toggler" type="button" onClick={handleToggle}>
 					<span className="navbar-toggler-icon"></span>
 				</button>
+
 				<div
 					className={`${isOpen ? 'show' : ''} offcanvas offcanvas-end w-50`}
 					tabIndex="-1"
