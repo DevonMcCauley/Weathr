@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Hourglass } from 'react-bootstrap-icons';
 import Modal from 'react-modal';
 
-const DisplayLoading = () => {
+const DisplayLoading = ({ label }) => {
 	const [modalIsOpen, setIsOpen] = useState(false);
 
 	const customStyles = {
@@ -28,13 +28,10 @@ const DisplayLoading = () => {
 	}, []);
 
 	return (
-		<Modal
-			isOpen={modalIsOpen}
-			style={customStyles}
-			contentLabel="Example Modal"
-		>
+		<Modal isOpen={modalIsOpen} style={customStyles} contentLabel="Loading">
 			<div className="row align-items-center justify-content-center">
 				<Hourglass className="text-primary rotate" size={100} />
+				{label}
 			</div>
 		</Modal>
 	);

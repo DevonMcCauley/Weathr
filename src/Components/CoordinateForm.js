@@ -9,7 +9,7 @@ import DisplayLoading from './DisplayLoading';
 const CoordinateForm = () => {
 	const [latitude, setLatitude] = useState('');
 	const [longitude, setLongitude] = useState('');
-	let [doFetchCoordinates, isLoading, error] = useThunk(fetchCoordinates);
+	const [doFetchCoordinates, isLoading, error] = useThunk(fetchCoordinates);
 	if (error) {
 		toast.error(error.message);
 	}
@@ -98,7 +98,7 @@ const CoordinateForm = () => {
 					</button>
 				</div>
 			</div>
-			{isLoading && <DisplayLoading />}
+			{isLoading && <DisplayLoading label={'Gathering forecast...'} />}
 		</form>
 	);
 };
