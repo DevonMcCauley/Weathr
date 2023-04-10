@@ -8,8 +8,8 @@ const App = () => {
 	return (
 		<Fragment>
 			<Header />
-			<div className="container h-100">
-				<div className="mt-4">
+			<div className="container h-100 pt-1 content-body">
+				<div className="standard-bottom">
 					<CoordinateForm />
 					<ForecastList />
 				</div>

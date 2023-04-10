@@ -37,3 +37,17 @@ code {
 		transform: rotate(360deg);
 	}
 }
+
+
+.content-body {
+	margin-top: 3.5em;
+	margin-bottom: 3.5em;
+}
+
+.standard-bottom {
+	padding-bottom: 3.5em;
+}
+
+footer, nav {
+	height: 3.5em;
+}

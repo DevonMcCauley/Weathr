@@ -3,8 +3,8 @@ import React from 'react';
 const Footer = () => {
 	return (
 		<footer
-			className="bottom-0 position-fixed sticky-bottom
-     text-center small bg-dark text-light w-100"
+			className="fixed-bottom
+     text-center bg-dark text-light"
 		>
 			Weathr - Devon McCauley
 			<a
