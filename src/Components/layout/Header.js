@@ -1,12 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useStorage } from '../../hooks/use-storage';
 
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false);
+	const [darkMode, setDarkMode] = useState(false);
+	const [accessStorage, isLoading, error] = useStorage();
 
+	// Handles the toggling of the side nav
 	const handleToggle = () => {
 		setIsOpen(!isOpen);
 	};
-	
+
+	// Gets the dark mode key from localstorage
+	useEffect(() => {
+		const storageKey = accessStorage({ key: 'weathr-dark-mode', type: 'get' });
+		setDarkMode(storageKey || false);
+	}, [accessStorage]);
+
+	// Sets the current theme (light/dark) and stores the dark mode key in localstorage
+	useEffect(() => {
+		document.body.setAttribute(
+			'data-bs-theme',
+			`${darkMode ? 'dark' : 'light'}`
+		);
+		accessStorage({ type: 'set', key: 'weathr-dark-mode', value: darkMode });
+	}, [darkMode, accessStorage]);
+
 	return (
 		<nav className="navbar bg-body-tertiary fixed-top">
 			<div className="container-fluid">
@@ -27,7 +46,24 @@ const Header = () => {
 					</div>
 					<div className="offcanvas-body">
 						<ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
-							<li>this is a test</li>
+							<li className="nav-item">
+								<div className="nav-link">
+									<div className="form-check form-switch">
+										{/* Toggle-able options for the user to change  */}
+										{/* Sets the theme (light/dark) of the application */}
+										<input
+											className="form-check-input"
+											type="checkbox"
+											role="switch"
+											onChange={() => {
+												setDarkMode(!darkMode);
+											}}
+											checked={darkMode}
+										/>
+										<label className="form-check-label">Dark Mode</label>
+									</div>
+								</div>
+							</li>
 						</ul>
 					</div>
 				</div>

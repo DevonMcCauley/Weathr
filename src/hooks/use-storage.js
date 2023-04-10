@@ -9,10 +9,9 @@ export function useStorage() {
 		setIsLoading(true);
 		try {
 			if (type === 'get') {
-				console.log('here');
-				return localStorage.getItem(key);
+				return JSON.parse(localStorage.getItem(key));
 			} else if (type === 'set') {
-				return localStorage.setItem(key, value);
+				return localStorage.setItem(key, JSON.stringify(value));
 			} else {
 				throw new Error("A valid type must be entered: 'get' or 'set'");
 			}
