@@ -51,3 +51,8 @@ code {
 footer, nav {
 	height: 3.5em;
 }
+
+
+.offcanvas-custom {
+	width: 14em !important
+}

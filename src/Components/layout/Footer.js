@@ -4,7 +4,7 @@ const Footer = () => {
 	return (
 		<footer
 			className="fixed-bottom
-     text-center bg-dark text-light"
+     text-center bg-body-tertiary"
 		>
 			Weathr - Devon McCauley
 			<a

@@ -39,7 +39,9 @@ const Header = () => {
 				</button>
 
 				<div
-					className={`${isOpen ? 'show' : ''} offcanvas offcanvas-end w-50`}
+					className={`${
+						isOpen ? 'show' : ''
+					} offcanvas offcanvas-end offcanvas-custom`}
 					tabIndex="-1"
 				>
 					<div className="offcanvas-header">
