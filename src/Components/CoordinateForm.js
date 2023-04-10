@@ -72,7 +72,7 @@ const CoordinateForm = () => {
 	}
 
 	return (
-		<form onSubmit={handleSubmit} className="container">
+		<form onSubmit={handleSubmit} className="container pt-2">
 			<div className="row">
 				<div className="col-12 col-md-4">
 					<input
