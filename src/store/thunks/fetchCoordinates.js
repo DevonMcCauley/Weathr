@@ -8,8 +8,12 @@ const fetchCoordinates = createAsyncThunk(
 		const response = await axios.get(
 			`https://api.weather.gov/points/${latitude},${longitude}`
 		);
+		const { city, state } =
+			response.data.properties.relativeLocation.properties;
 		const { gridId, gridX, gridY } = response.data.properties;
-		return { gridId, gridX, gridY };
+		console.log(city);
+		console.log(state);
+		return { gridId, gridX, gridY, city, state };
 	}
 );
 

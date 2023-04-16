@@ -8,7 +8,9 @@ import { fetchForecast } from '../store';
 
 const ForecastList = () => {
 	const [doFetchForecast, isLoading, error] = useThunk(fetchForecast);
-
+	
+	let location = '';
+	
 	// Gets grid coordinates from state
 	const coordinates = useSelector((state) => {
 		return state.weather.data.coordinates;
@@ -36,6 +38,8 @@ const ForecastList = () => {
 		<ForecastListItem key={forecast.number} forecast={forecast} />
 	));
 	if (forecastData.length < 1) {
+		location = '';
+
 		forecastListItems = (
 			<div className="text-center w-100">
 				<div className="col-12">
@@ -44,9 +48,20 @@ const ForecastList = () => {
 				<div className="col-12 mt-3">{<GlobeAmericas size={100} />}</div>
 			</div>
 		);
+	} else {
+		// Shows the parsed location that the user entered
+		location = (
+			<div>
+				<hr />
+				<h3 className="text-center mb-3 mb-md-4">
+					{coordinates.city}, {coordinates.state}
+				</h3>
+			</div>
+		);
 	}
 	return (
 		<div className="container mt-3 mt-md-5">
+			{location}
 			<div className="row h-100 row-cols-1 row-cols-md-2 g-3">
 				{forecastListItems}
 			</div>
