@@ -11,8 +11,6 @@ const fetchCoordinates = createAsyncThunk(
 		const { city, state } =
 			response.data.properties.relativeLocation.properties;
 		const { gridId, gridX, gridY } = response.data.properties;
-		console.log(city);
-		console.log(state);
 		return { gridId, gridX, gridY, city, state };
 	}
 );
