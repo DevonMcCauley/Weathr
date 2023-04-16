@@ -1,10 +1,8 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import CoordinateForm from './components/CoordinateForm';
 import ForecastList from './components/ForecastList';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
-import { useThunk } from './hooks/use-thunk';
-import { getGoogle } from './store';
 import GeolocationSearch from './components/GeolocationSearch';
 import { ArrowDownUp } from 'react-bootstrap-icons';
 
