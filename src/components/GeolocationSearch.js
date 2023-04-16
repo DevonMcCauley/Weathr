@@ -55,7 +55,7 @@ const GeolocationSearch = () => {
 				<div className="col-12 col-md-8">
 					<input
 						className="form-control my-2 my-md-0"
-						placeholder="Enter Location"
+						placeholder="Enter location"
 						type="text"
 						value={location}
 						onChange={handleChange}
