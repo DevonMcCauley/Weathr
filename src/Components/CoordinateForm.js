@@ -72,9 +72,9 @@ const CoordinateForm = () => {
 	}
 
 	return (
-		<form onSubmit={handleSubmit} className="container pt-2">
-			<div className="row">
-				<div className="col-12 col-md-4">
+		<form onSubmit={handleSubmit} className="container">
+			<div className="row mt-md-1">
+				<div className="col-12 col-md-4 mt-2 mt-md-0">
 					<input
 						className="form-control"
 						type="number"
@@ -108,7 +108,6 @@ const CoordinateForm = () => {
 					</button>
 				</div>
 			</div>
-			<p>{isLoadingGeolocation}</p>
 			{isLoadingGeolocation && (
 				<DisplayLoading label={'Gathering location...'} />
 			)}
