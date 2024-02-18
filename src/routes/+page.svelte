@@ -5,9 +5,14 @@
 	let latitude: string = '';
 	let longitude: string = '';
 	let forecast: any[] = [];
+	let city = '';
+	let state = '';
 
 	const handleSubmit = async () => {
-		forecast = await getWeatherForecast(latitude, longitude);
+		let resForecast = await getWeatherForecast(latitude, longitude);
+		forecast = resForecast.periods;
+		city = resForecast.city;
+		state = resForecast.state;
 	};
 </script>
 
@@ -23,6 +28,8 @@
 
 		<!-- Apply TailwindCSS overflow classes here -->
 		{#if forecast.length > 0}
+			<h3 class="h3">Forecast for {city}, {state}</h3>
+
 			<div class="grid grid-cols-1 gap-4 p-5 md:grid-cols-2 lg:grid-cols-3">
 				{#each forecast as period}
 					<ForecastCard {period} />

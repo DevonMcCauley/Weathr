@@ -31,7 +31,7 @@
 
 	<svelte:fragment slot="footer">
 		<!-- Footer Content -->
-		<footer class="bg-primary-500 text-white text-center p-4">
+		<footer class="bg-primary-500 text-white text-center p-4 text-xs">
 			<p>&copy; 2024 Devon McCauley</p>
 		</footer>
 	</svelte:fragment>
